@@ -1,0 +1,12 @@
+span {
+  margin: 5px;
+}
+
+.delete-icon {
+  height: 15px;
+}
+
+.delete-icon:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
