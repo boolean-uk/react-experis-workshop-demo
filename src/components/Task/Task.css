@@ -1,12 +1,13 @@
-span {
-  margin: 5px;
+section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.buttons {
+  display: grid;
+  grid-template-columns: 20px 20px 20px;
 }
 
-.delete-icon {
-  height: 15px;
-}
-
-.delete-icon:hover {
+.icon:hover {
   transform: scale(1.1);
   cursor: pointer;
 }
