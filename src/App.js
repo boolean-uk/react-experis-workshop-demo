@@ -9,7 +9,7 @@ const initialTasks = [
 ]
 
 function App() {
-  const [tasks, setTasks] = useState(initialTasks)
+  const [tasks, setTasks] = useState([])
   // 1. effect hook
   useEffect(() => {
     // 2. fetch()
@@ -68,11 +68,22 @@ function App() {
 
   const deleteTask = (taskId) => {
 
-
-    const filteredTasks = tasks.filter(item => item.id !== taskId)
-    // find the task
-    // remove it from the array of tasks
-    setTasks(filteredTasks)
+    fetch(`http://localhost:3030/tasks/${taskId}`, {
+      method: 'DELETE',
+    }).then(response => {
+      
+      if(response.status === 200){
+        
+        const filteredTasks = tasks.filter(item => item.id !== taskId)
+       
+        setTasks(filteredTasks)
+      }
+      
+    })
+    // const filteredTasks = tasks.filter(item => item.id !== taskId)
+    // // find the task
+    // // remove it from the array of tasks
+    // setTasks(filteredTasks)
   }
 
   return (
