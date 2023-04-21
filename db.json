@@ -1,0 +1,46 @@
+{
+  "tasks": [
+    {
+      "id": 2,
+      "text": "Work out",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "text": "See the doctor",
+      "completed": true
+    },
+    {
+      "text": "Shower",
+      "completed": false,
+      "id": 4
+    },
+    {
+      "text": "Get drunk",
+      "completed": false,
+      "id": 5
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    },
+    {
+      "title": "Bruda-title",
+      "author": "SebastianTest",
+      "id": 2
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
