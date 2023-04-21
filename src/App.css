@@ -1,3 +1,6 @@
 .App {
   text-align: center;
 }
+.AddButton:hover {
+  font-size: large;
+}
