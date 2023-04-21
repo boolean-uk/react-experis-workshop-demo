@@ -1,0 +1,22 @@
+{
+  "tasks": [
+    {
+      "text": "draconis mons",
+      "completed": false,
+      "amount": "7",
+      "id": 1
+    },
+    {
+      "text": "ember bay",
+      "completed": false,
+      "amount": "2",
+      "id": 2
+    },
+    {
+      "text": "lake doric",
+      "completed": false,
+      "amount": "2",
+      "id": 3
+    }
+  ]
+}

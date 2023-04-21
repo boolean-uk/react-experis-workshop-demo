@@ -1,78 +1,136 @@
-import { useState } from 'react' // state hook
-import './App.css';
-import Task from './components/Task'
-
-const initialTasks = [
- { id: 1, text: 'Go shopping', completed: false },
- { id: 2, text: 'Work out', completed: false },
- { id: 3, text: 'See the doctor', completed: true }
-]
-let id = initialTasks.length
+import { useState, useEffect } from "react"; // state hook
+import "./App.css";
+import Task from "./components/Task";
 
 function App() {
-  const [tasks, setTasks] = useState(initialTasks)
+  useEffect(() => {
+    fetch("http://localhost:3030/tasks")
+      .then((res) => res.json())
+      .then((data) => setTasks(data));
+  }, []);
 
-  const handleSubmit = (event) => {
-    // prevent default behaviour of event (in this case form submission event causes page to reload)
-    event.preventDefault()
-    id++
+  const [tasks, setTasks] = useState([]);
+  const [task, setTask] = useState({ text: "", completed: false, amount: 1 });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTask({ ...task, [name]: value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     // get value from first element within element that caused submission event
-    const text = event.target[0].value
-    // create a new task with the correct data
-    const newTask = {
-      id: id,
-      text: text,
-      completed: false
-    }
-    // create new state
-    const newTasks = [...tasks, newTask]
-    // tell react to update state & rerender
-    setTasks(newTasks)
-  }
+    const res = await fetch("http://localhost:3030/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    });
+    const data = await res.json();
+    setTasks([...tasks, data]);
+    console.log(tasks);
+  };
 
-  const updateTasks = (taskId, value) => {
-    // find the task
-    // create a new array with the updated task
-    const updatedTasks = tasks.map(task => {
+  const updateTasks = async (taskId, value) => {
+    const res = await fetch(`http://localhost:3030/tasks/${taskId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ completed: value }),
+    });
+
+    const updatedTask = await res.json();
+
+    const updatedTasks = tasks.map((task) => {
       if (task.id === taskId) {
-        task.completed = value
+        return updatedTask;
       }
-      return task
-    })
-    setTasks(updatedTasks)
-  }
+      return task;
+    });
+    setTasks(updatedTasks);
+  };
 
-  const deleteTask = (taskId) => {
+  const updateNumber = async (taskId, amount) => {
+    if (amount > 1) {
+    const res = await fetch(`http://localhost:3030/tasks/${taskId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ amount: amount - 1 }),
+    });
 
-    const filteredTasks = tasks.filter(item => item.id !== taskId)
-    // find the task
-    // remove it from the array of tasks
-    setTasks(filteredTasks)
-  }
+    const updatedNumber = await res.json()
+
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === taskId) {
+        return updatedNumber
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+    } 
+    
+  else if (amount === 1) {
+    const res = await fetch(`http://localhost:3030/tasks/${taskId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ amount: amount - 1 }),
+    });
+
+    const updatedNumber = await res.json()
+
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === taskId) {
+        return updatedNumber
+      }
+      return task;
+    });
+    updateTasks(taskId, true)
+    setTasks(updatedTasks);
+    } 
+
+
+  };
+
+  const deleteTask = async (taskId) => {
+    await fetch(`http://localhost:3030/tasks/${taskId}`, {
+      method: "DELETE",
+    });
+    const filteredTasks = tasks.filter((item) => item.id !== taskId);
+    setTasks(filteredTasks);
+  };
 
   return (
-
-    <div className='App'>
+    <div className="App">
       <form onSubmit={handleSubmit}>
-        <input type="text" name="task"/>
+        <input
+          type="text"
+          name="text"
+          onChange={handleChange}
+          value={task.text}
+        />
+        <input type="number" name="amount" onChange={handleChange} />
         <button>add task</button>
       </form>
 
-      {
-        tasks.map(item => {
-          return (
-            <Task
-              task={item}
-              key={item.id}
-              updateTasks={updateTasks}
-              deleteTask={deleteTask}
-            />
-          )})
-      }
-
+      {tasks.map((item) => {
+        return (
+          <Task
+            task={item}
+            key={item.id}
+            updateTasks={updateTasks}
+            deleteTask={deleteTask}
+            updateNumber={updateNumber}
+          />
+        );
+      })}
     </div>
-
-  )
+  );
 }
 
 export default App;
