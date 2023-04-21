@@ -2,7 +2,7 @@ import './Task.css'
 
 const Task = ({task, updateTasks, deleteTask}) => {
 
-  const handleChange = (event) => {
+  const handleChange = (event) => { 
     updateTasks(task.id, event.target.checked)
   }
 
