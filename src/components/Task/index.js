@@ -1,6 +1,6 @@
 import './Task.css'
 
-const Task = ({task, updateTasks, deleteTask}) => {
+const Task = ({task, updateTasks, deleteTask, updateText}) => {
 
   const handleChange = (event) => {
     updateTasks(task.id, event.target.checked)
@@ -9,6 +9,9 @@ const Task = ({task, updateTasks, deleteTask}) => {
   const handleClick = () => {
     // add more stuff
     deleteTask(task.id)
+  }
+  const handleTextChange = () => {
+    updateText(task.id)
   }
 
   return (
@@ -34,6 +37,7 @@ const Task = ({task, updateTasks, deleteTask}) => {
         alt="trash can delete icon"
         onClick={handleClick}
       />
+      <button className='ChangeButton' onClick = {handleTextChange}>Change text</button>
 
     </div>
   )
