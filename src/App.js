@@ -1,50 +1,70 @@
-import { useState } from 'react' // state hook
+import { useState, useEffect } from 'react' // state hook & effect hook
 import './App.css';
 import Task from './components/Task'
 
-const initialTasks = [
- { id: 1, text: 'Go shopping', completed: false },
- { id: 2, text: 'Work out', completed: false },
- { id: 3, text: 'See the doctor', completed: true }
-]
-let id = initialTasks.length
-
 function App() {
-  const [tasks, setTasks] = useState(initialTasks)
+  const [tasks, setTasks] = useState([])
+  const [task, setTask] = useState({text: "", completed: false})
 
-  const handleSubmit = (event) => {
+  // I want to make a GET /tasks and then show this data on the page
+  // 1. effect hook
+  useEffect(() => {
+     // 2. fetch()
+    fetch("http://localhost:3030/tasks")
+    .then(res => res.json())
+    .then(data => setTasks(data))
+  }, [])
+
+  const handleChange = (e) => {
+    const {name, value} = e.target
+    setTask({...task, [name]: value})
+  }
+ 
+
+  const handleSubmit = async (event) => {
     // prevent default behaviour of event (in this case form submission event causes page to reload)
     event.preventDefault()
-    id++
-    // get value from first element within element that caused submission event
-    const text = event.target[0].value
-    // create a new task with the correct data
-    const newTask = {
-      id: id,
-      text: text,
-      completed: false
-    }
-    // create new state
-    const newTasks = [...tasks, newTask]
-    // tell react to update state & rerender
-    setTasks(newTasks)
+    // //Need to make a POST HTTP request to http://localhost:3030/tasks/ and then display data
+    const res = await fetch("http://localhost:3030/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type" : "application/json"
+      },
+      body: JSON.stringify(task)
+    })
+
+    const data = await res.json()
+    setTasks([...tasks, data])
   }
 
-  const updateTasks = (taskId, value) => {
-    // find the task
-    // create a new array with the updated task
+  const updateTasks = async (taskID, value) => {
+    // make a PATCH HTTP request to http://localhost:3030/tasks/
+    // add data to the request body in the format JSON 
+    const res = await fetch(`http://localhost:3030/tasks/${taskID}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type" : "application/json"
+      },
+      body: JSON.stringify({completed: value})
+    })
+
+    const updatedTask = await res.json()
+
     const updatedTasks = tasks.map(task => {
-      if (task.id === taskId) {
-        task.completed = value
+      if (task.id === taskID) {
+        return updatedTask
       }
       return task
     })
     setTasks(updatedTasks)
   }
 
-  const deleteTask = (taskId) => {
+  const deleteTask = async (taskID) => {
+    await fetch(`http://localhost:3030/tasks/${taskID}`, {
+      "method": "DELETE"
+    })
 
-    const filteredTasks = tasks.filter(item => item.id !== taskId)
+    const filteredTasks = tasks.filter(item => item.id !== taskID)
     // find the task
     // remove it from the array of tasks
     setTasks(filteredTasks)
@@ -54,7 +74,7 @@ function App() {
 
     <div className='App'>
       <form onSubmit={handleSubmit}>
-        <input type="text" name="task"/>
+        <input type="text" name="text" onChange={handleChange} value={task.text}/>
         <button>add task</button>
       </form>
 
