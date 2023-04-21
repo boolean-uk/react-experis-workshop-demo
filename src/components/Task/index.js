@@ -1,42 +1,37 @@
-import './Task.css'
+import "./Task.css";
+import { TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
 
-const Task = ({task, updateTasks, deleteTask}) => {
-
-  const handleChange = (event) => {
-    updateTasks(task.id, event.target.checked)
-  }
-
-  const handleClick = () => {
-    // add more stuff
-    deleteTask(task.id)
-  }
-
+const Task = ({
+  task,
+  handleCheckboxButton,
+  handleDeleteButton,
+  handleEditButton,
+}) => {
   return (
-    <div>
-      <span
+    <section>
+      <div
         style={
-          task.completed ? {
-            textDecoration: "line-through",
-            color: "grey"
-          } : {}
+          task.completed
+            ? {
+                textDecoration: "line-through",
+                color: "grey",
+              }
+            : {}
         }
       >
         {task.text}
-      </span>
-      <input
-        type="checkbox"
-        onChange={handleChange}
-        checked={task.completed}
-      />
-      <img
-        className="delete-icon"
-        src="icons8-trash-can.svg"
-        alt="trash can delete icon"
-        onClick={handleClick}
-      />
+      </div>
+      <div className="buttons">
+        <input
+          type="checkbox"
+          onChange={() => handleCheckboxButton(task)}
+          checked={task.completed}
+        />
+        <PencilIcon className="icon" onClick={() => handleEditButton(task)} />
+        <TrashIcon className="icon" onClick={() => handleDeleteButton(task)} />
+      </div>
+    </section>
+  );
+};
 
-    </div>
-  )
-}
-
-export default Task
+export default Task;
