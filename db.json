@@ -1,0 +1,34 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "text": "Go shopping",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "text": "Work out",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "text": " See the doctor",
+      "completed": true
+    },
+    {
+      "text": "meet Lucy",
+      "completed": false,
+      "id": 4
+    },
+    {
+      "text": "hug John",
+      "completed": false,
+      "id": 5
+    },
+    {
+      "text": "njnjnj",
+      "completed": false,
+      "id": 6
+    }
+  ]
+}
