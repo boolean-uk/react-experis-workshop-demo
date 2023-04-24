@@ -1,14 +1,13 @@
 import './Task.css'
 
-const Task = ({task, updateTasks, deleteTask}) => {
+const Task = ({task, deleteTask, updateTask}) => {
 
-  const handleChange = (event) => {
-    updateTasks(task.id, event.target.checked)
+  const removeItem = (id) => {
+    deleteTask(id)
   }
 
-  const handleClick = () => {
-    // add more stuff
-    deleteTask(task.id)
+  const completeItem = (id, value) => {
+    updateTask(id, value)
   }
 
   return (
@@ -25,14 +24,14 @@ const Task = ({task, updateTasks, deleteTask}) => {
       </span>
       <input
         type="checkbox"
-        onChange={handleChange}
+        onChange={(e) => completeItem(task.id, e.target.checked)}
         checked={task.completed}
       />
       <img
         className="delete-icon"
         src="icons8-trash-can.svg"
         alt="trash can delete icon"
-        onClick={handleClick}
+        onClick={() => removeItem(task.id)}
       />
 
     </div>
